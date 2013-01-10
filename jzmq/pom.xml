@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.rmoquin.osgi</groupId>
+    <artifactId>bundles</artifactId>
+    <version>1.0-alpha1</version>
+  </parent>
+  <groupId>com.rmoquin.bundle</groupId>
+  <artifactId>jzmq</artifactId>
+  <version>2.1.0</version>
+  <packaging>bundle</packaging>
+  <name>Backtype JZMQ</name>
+  <description>Backtype JZMQ</description>
+  <properties>
+    <symbolic.name>${project.groupId}.${project.artifactId}</symbolic.name>
+    <embed-dep>*;scope=provided;type=!pom;inline=true</embed-dep>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-SymbolicName>${symbolic.name}</Bundle-SymbolicName>
+            <Bundle-Description>${project.name}</Bundle-Description>
+            <Embed-Dependency>${embed-dep}</Embed-Dependency>
+            <Bundle-NativeCode>
+              libjzmq-windows-x86.dll; libzmq-windows-x86.dll; processor=x86; osfamily=windows, 
+              libjzmq-windows-x86_64.dll; libzmq-windows-x86_64.dll; processor=x86_64; osfamily=windows, 
+              libjzmq-macosx-x86.dylib; osname=macosx; processor=x86,
+              libjzmq-macosx-x86_64.dylib; osname=macosx; processor=x86_64,
+              libjzmq-linux-x86.so; osname=linux; processor=x86,
+              libjzmq-linux-x86_64.so; osname=linux; processor=x86_64
+            </Bundle-NativeCode>
+            <Private-Package>
+            </Private-Package>
+            <Export-Package>
+              org.zeromq
+            </Export-Package>
+            <Import-Package>
+              *
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.7</version>
+        <executions>
+          <execution>
+            <id>jzmq-install</id>
+            <phase>install</phase>
+            <goals>
+              <goal>deploy-file</goal>
+            </goals>
+            <configuration>
+              <url>file://${settings.localRepository}</url>
+            </configuration>
+          </execution>
+          <execution>
+            <id>jzmq-deploy</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>deploy-file</goal>
+            </goals>
+            <configuration>
+              <url>https://clojars.org/repo</url>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <pomFile>pom.xml</pomFile>
+          <file>${project.build.directory}/${project.build.finalName}.jar</file>
+          <repositoryId>clojars</repositoryId>
+          <!--The all have to be on the same line, otherwise the 2nd file in the list cannot be found.-->
+          <files>
+            src/main/resources/libjzmq-linux-x86.so,src/main/resources/libjzmq-linux-x86_64.so,src/main/resources/libjzmq-macosx-x86.dylib,src/main/resources/libjzmq-macosx-x86_64.dylib,src/main/resources/libjzmq-windows-x86.dll,src/main/resources/libjzmq-windows-x86_64.dll,src/main/resources/libzmq-windows-x86.dll,src/main/resources/libzmq-windows-x86_64.dll
+          </files>
+          <types>
+            so,
+            so,
+            dylib,
+            dylib,
+            dll,
+            dll,
+            dll,
+            dll
+          </types>
+          <classifiers>
+            libjzmq-x86-linux,
+            libjzmq-amd64-linux,
+            libjzmq-x86-macosx,
+            libjzmq-amd64-macosx,
+            libjzmq-x86-windows,
+            libjzmq-amd64-windows,
+            libzmq-x86-windows,
+            libzmq-amd64-windows
+          </classifiers>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>backtype</groupId>
+      <artifactId>jzmq</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

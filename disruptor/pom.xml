@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.rmoquin.osgi</groupId>
+    <artifactId>bundles</artifactId>
+    <version>1.0-alpha1</version>
+  </parent>
+  <groupId>com.rmoquin.bundle</groupId>
+  <artifactId>disruptor</artifactId>
+  <version>2.10.1</version>
+  <packaging>bundle</packaging>
+  <name>Disruptor Bundle</name>
+  <description>This dependency was improperly configured as an OSGI bundle, so it's going to need to pulled into this bundle
+    to get rid of the errant manifest.mf entries
+  </description>
+  <properties>
+    <symbolic.name>${project.groupId}.${project.artifactId}</symbolic.name>
+    <embed-dep>*;scope=provided;type=!pom;inline=true</embed-dep>
+  </properties>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <configuration>
+          <instructions>
+            <Bundle-Name>${project.artifactId}</Bundle-Name>
+            <Bundle-SymbolicName>${symbolic.name}</Bundle-SymbolicName>
+            <Bundle-Description>${project.name}</Bundle-Description>
+            <Embed-Dependency>${embed-dep}</Embed-Dependency>
+            <Private-Package>              
+            </Private-Package>
+            <Export-Package>
+              com.lmax.disruptor,
+              com.lmax.disruptor.dsl,
+              com.lmax.disruptor.util,
+              com.lmax.disruptor.collections
+            </Export-Package>
+            <Import-Package>
+              !sun.misc,
+              *
+            </Import-Package>
+          </instructions>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>com.googlecode.disruptor</groupId>
+      <artifactId>disruptor</artifactId>
+      <version>${project.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ${project.artifactId}
+Bundle-SymbolicName: ${project.groupId}.${project.artifactId}
+Bundle-Version: ${project.version}
+Bundle-ClassPath: .
+Export-Package: carbonite;version="${project.version}"
+Import-Package: clojure,clojure.lang,clojure.osgi;version="${clojure.osgi.version}",com.esotericsoftware.kryo,com.esotericsoftware.kryo.io,com.esotericsoftware.kryo.serializers
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

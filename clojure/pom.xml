@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.rmoquin.osgi</groupId>
+    <artifactId>bundles</artifactId>
+    <version>1.0-alpha1</version>
+  </parent>
+  <groupId>com.rmoquin.bundle</groupId>
+  <artifactId>clojure</artifactId>
+  <version>1.4.0</version>
+  <packaging>jar</packaging>
+  <name>Clojure Bundle</name>
+  <description>Clojure OSGI Bundle</description>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources/META-INF</directory>
+        <targetPath>${project.build.directory}/META-INF</targetPath>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.clojure</groupId>
+                  <artifactId>clojure</artifactId>
+                </artifactItem>
+              </artifactItems>
+              <excludes>**/META-INF/*</excludes>
+              <outputDirectory>${project.build.directory}/classes</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <archive>
+            <manifestFile>${project.build.directory}/META-INF/MANIFEST.MF</manifestFile>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>clojure</artifactId>
+      <version>${clojure.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>
